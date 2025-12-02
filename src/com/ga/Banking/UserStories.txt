@@ -1,0 +1,78 @@
+1. Authentication & Login:
+
+US-01 – Login:
+As a user, I want to log into the system, so that I can securely access my banking services.
+
+US-02 – Role Recognition:
+As a user, I need to be identified whether I am a Banker or a Customer, so that I can get the correct permissions.
+
+US-03 – Failed Login & Fraud Detection:
+As a user, I want the system to lock my account for 1 minute after 3 failed login attempts, so that my account stays secure from fraud.
+
+
+2. Customer Management:
+
+US-04 – Add New Customer:
+As a banker, I want to be able to create a new customer profile, so that customers can start using the banking system.
+
+US-05 – Create Accounts:
+As a banker, I want to add checking and/or savings accounts for new customers, so that they can manage their money.
+
+US-06 – Set Password:
+As a customer, I want to set my own password, so that I can log in securely.
+
+US-07 – Password Encryption:
+As a system, I want to encrypt all passwords, so that sensitive data is protected.
+
+
+3. Account Transactions:
+
+US-08 – Withdraw Money:
+As a customer, I want to withdraw money from my checking or savings account, so that I can access cash.
+
+US-09 – Deposit Money:
+As a customer, I want to deposit money into my accounts, so that I can add funds.
+
+US-10 – Transfer Money:
+As a customer, I want to transfer money between my own accounts or to another customer’s account,
+ so that I can move funds when needed.
+
+US-11 – Overdraft Protection:
+As a system, I want to charge overdraft fees, restrict negative balances,
+ and deactivate accounts after multiple overdrafts, so that we maintain financial compliance.
+
+
+4. Debit Cards & Limits:
+
+US-12 – Card Assignment:
+As a banker, I want each account to be assigned a Mastercard type (Platinum, Titanium, Standard),
+ so that customers receive proper benefits.
+
+US-13 – Transaction Limits:
+As a customer, I want the system to enforce daily limits based on my card type,
+ so that I can transact within my budget.
+
+
+5. Transaction Tracking & History:
+
+US-14 – Track Transactions:
+As a system, I want to record each transaction in a separate file, so that history is preserved.
+
+US-15 – Display Transaction History:
+As a customer, I want to view all my transactions with dates and balances,
+ so that I can track my financial activity.
+
+US-16 – Filter Transaction History:
+As a customer, I want to filter my transactions by date (today, yesterday, last 7 days, last month),
+ so that I can find specific activities.
+
+US-17 – Account Statement:
+As a customer, I want a detailed account statement showing my total balance and transaction history,
+ so that I have complete visibility.
+
+
+6. Exception Handling & System Stability:
+US-18 – Handle Invalid Inputs:
+As a system, I want to handle invalid amounts, missing files, and incorrect commands,
+ so that the application doesn’t crash.
+
