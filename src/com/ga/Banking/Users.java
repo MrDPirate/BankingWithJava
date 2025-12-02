@@ -13,15 +13,20 @@ public class Users {
     private LocalDateTime updated_at;
     private long id;
 
-    public Users(String username, String password, String role, LocalDateTime created_at, long id) {
+    public Users(String username, String password, String role, long id) {
         this.username = username;
         this.password = password;
         this.role = role;
         this.failed_login_attempts = 0;
-        this.account_locked_until= created_at;
-        this.created_at = created_at;
-        this.updated_at = created_at;
+        this.account_locked_until= LocalDateTime.now();
+        this.created_at = LocalDateTime.now();
+        this.updated_at = LocalDateTime.now();
         this.id = id;
+    }
+
+    public Users(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public String getUsername() {
