@@ -32,9 +32,13 @@ public class Auth{
         }
     }
 
-    private void register(String username, String password, String role, long id){
+    private static void register(String username, String password, String role,String name){
         String hashed_password = hashPass256(password);
-        users.put(username,new Users(username, hashed_password, role, id));
+        if (dbHelper.checkUserExist(username)){
+            System.out.println("User Already exist");
+            return;
+        }
+        dbHelper.addNew(username,hashed_password,role,name);
     }
 
     private boolean login(String username, String password) {
@@ -44,10 +48,7 @@ public class Auth{
     }
 
     public static void main(String[] args) {
-        Auth test = new Auth();
-        test.register("dfds","123","fds",2342);
-        System.out.println(test.users.get("dfds").getPassword());
-
+        Auth.register("hi","123","Banker", "Mr Khalil");
     }
 
 }

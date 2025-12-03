@@ -11,17 +11,18 @@ public class Users {
     private LocalDateTime account_locked_until;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
-    private long id;
+    private String name;
 
-    public Users(String username, String password, String role, long id) {
+
+    public Users(String username, String password, String role, String name) {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.name=name;
         this.failed_login_attempts = 0;
         this.account_locked_until= LocalDateTime.now();
         this.created_at = LocalDateTime.now();
         this.updated_at = LocalDateTime.now();
-        this.id = id;
     }
 
     public Users(String username, String password) {
@@ -84,12 +85,11 @@ public class Users {
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
     }
-
-    public long getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 }
