@@ -3,7 +3,7 @@ package com.ga.Banking;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Users {
+public  abstract class Users {
     private String username;
     private String password;
     private String role;
@@ -12,6 +12,7 @@ public class Users {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
     private String name;
+    private String isLoggedIn;
 
 
     public Users(String username, String password, String role, String name) {
@@ -30,21 +31,13 @@ public class Users {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
-    }
+    public abstract String getUsername();
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public abstract void setUsername(String username);
 
-    public String getPassword() {
-        return password;
-    }
+    public abstract String getPassword();
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public abstract void setPassword(String password);
 
     public String getRole() {
         return role;

@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Objects;
 
 
 public class Auth{
@@ -38,17 +39,41 @@ public class Auth{
             System.out.println("User Already exist");
             return;
         }
+        System.out.println("Creating account for: "+username);
         dbHelper.addNew(username,hashed_password,role,name);
     }
 
-    private boolean login(String username, String password) {
-        if (users.containsKey(username)) {
-            return users.get(username).getPassword().equals(hashPass256(password));
-        } else return false;
+    private static boolean login(String username, String password) {
+        if (dbHelper.checkUserExist(username)) {
+            String[] user = dbHelper.getUserData(username);
+            if (Objects.equals(hashPass256(password), user[1])) {
+                dbHelper.setLoggedIn(username);
+                return true;
+            } else {
+                System.out.println("Username or password is wrong");
+                return false;
+            }
+        } else {
+            System.out.println("Username or password is wrong");
+            return false;
+        }
+    }
+
+    private static boolean logout(String username){
+        if (dbHelper.checkUserExist(username)) {
+            dbHelper.setLoggedOut(username);
+            return true;
+        } else {
+            System.out.println("Error happened, no such a user");
+            return false;
+        }
     }
 
     public static void main(String[] args) {
-        Auth.register("hi","123","Banker", "Mr Khalil");
+//        password is always: 123
+//        Auth.register("khalil","123","Banker", "Mr Khalil");
+//        Auth.login("hasan","123");
+        Auth.logout("hasan");
     }
 
 }
