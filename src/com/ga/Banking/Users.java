@@ -1,88 +1,101 @@
 package com.ga.Banking;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 
-public  abstract class Users {
-    private String username;
-    private String password;
-    private String role;
-    private int failed_login_attempts;
-    private LocalDateTime account_locked_until;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
-    private String name;
-    private String isLoggedIn;
+public class Users {
+    private static String username;
+    private static String password;
+    private static String role;
+    private static int failed_login_attempts;
+    private static LocalDateTime account_locked_until;
+    private static LocalDateTime created_at;
+    private static LocalDateTime updated_at;
+    private static String isLoggedIn;
+    private static String name;
 
 
-    public Users(String username, String password, String role, String name) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.name=name;
-        this.failed_login_attempts = 0;
-        this.account_locked_until= LocalDateTime.now();
-        this.created_at = LocalDateTime.now();
-        this.updated_at = LocalDateTime.now();
+    public Users(String[] user) {
+        username = user[0];
+        password = user[1];
+        role = user[2];
+        failed_login_attempts = Integer.parseInt(user[3]);
+        account_locked_until= LocalDateTime.parse(user[4]);
+        created_at = LocalDateTime.parse(user[5]);
+        updated_at = LocalDateTime.parse(user[6]);
+        isLoggedIn = user[7];
+        name = user [8];
     }
 
-    public Users(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public static String getUsername() {
+        return username;
     }
 
-    public abstract String getUsername();
+    public static void setUsername(String username) {
+        Users.username = username;
+    }
 
-    public abstract void setUsername(String username);
+    public static String getPassword() {
+        return password;
+    }
 
-    public abstract String getPassword();
+    public static void setPassword(String password) {
+        Users.password = password;
+    }
 
-    public abstract void setPassword(String password);
-
-    public String getRole() {
+    public static String getRole() {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public  void setRole(String role) {
+        Users.role = role;
     }
 
-    public int getFailed_login_attempts() {
+    public static int getFailed_login_attempts() {
         return failed_login_attempts;
     }
 
-    public void setFailed_login_attempts(int failed_login_attempts) {
-        this.failed_login_attempts = failed_login_attempts;
+    public static void setFailed_login_attempts(int failed_login_attempts) {
+        Users.failed_login_attempts = failed_login_attempts;
     }
 
-    public LocalDateTime getAccount_locked_until() {
+    public static LocalDateTime getAccount_locked_until() {
         return account_locked_until;
     }
 
-    public void setAccount_locked_until(LocalDateTime account_locked_until) {
-        this.account_locked_until = account_locked_until;
+    public static void setAccount_locked_until(LocalDateTime account_locked_until) {
+        Users.account_locked_until = account_locked_until;
     }
 
-    public LocalDateTime getCreated_at() {
+    public static LocalDateTime getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public static void setCreated_at(LocalDateTime created_at) {
+        Users.created_at = created_at;
     }
 
-    public LocalDateTime getUpdated_at() {
+    public static LocalDateTime getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
+    public static void setUpdated_at(LocalDateTime updated_at) {
+        Users.updated_at = updated_at;
     }
-    public String getName() {
+
+    public static String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public static void setName(String name) {
+        Users.name = name;
+    }
+
+    public static String getIsLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public static void setIsLoggedIn(String isLoggedIn) {
+        Users.isLoggedIn = isLoggedIn;
     }
 }

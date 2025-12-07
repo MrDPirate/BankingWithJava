@@ -8,11 +8,12 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class dbHelper {
+public abstract class dbHelper {
 
     static String path = "db/";
 
@@ -20,14 +21,14 @@ public class dbHelper {
 
         if (role.equals("Banker")) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(path+"Banker-"+name+"-"+username, true))) {
-                writer.write(username + "," + password + "," + role +","+ "0"+"," + LocalDateTime.now() + "," + LocalDateTime.now() +","+ LocalDateTime.now()+","+"No");
+                writer.write(username + "," + password + "," + role +","+ "0"+"," + LocalDateTime.now() + "," + LocalDateTime.now() +","+ LocalDateTime.now()+","+"No"+","+name);
             } catch (IOException e) {
                 System.out.println("Error Creating new User: " + e.getMessage());
             }
         }
         else if (role.equals("Customer")) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(path+"Customer-"+name+"-"+username, true))) {
-                writer.write(username + "," + password + "," + role +","+ "0"+"," + LocalDateTime.now() + "," + LocalDateTime.now() +","+ LocalDateTime.now()+","+"No");
+                writer.write(username + "," + password + "," + role +","+ "0"+"," + LocalDateTime.now() + "," + LocalDateTime.now() +","+ LocalDateTime.now()+","+"No"+","+name);
             } catch (IOException e) {
                 System.out.println("Error Creating new User: " + e.getMessage());
             }
@@ -95,7 +96,7 @@ public class dbHelper {
         return data.split(",");
     }
 
-    public static void updateDate(String[] user){
+    public static void updateData(String[] user){
 
         String updatedUserData = String.join(",", user);
         String fileName = getUserFile(user[0]);
@@ -107,6 +108,20 @@ public class dbHelper {
         }
     }
 
+    public static String[] userTOoArray(Users users){
+        return new String[]{
+                Users.getUsername(),
+                Users.getPassword(),
+                Users.getRole(),
+                String.valueOf(Users.getFailed_login_attempts()),
+                String.valueOf(Users.getAccount_locked_until()),
+                String.valueOf(Users.getCreated_at()),
+                String.valueOf(Users.getUpdated_at()),
+                Users.getIsLoggedIn(),
+                Users.getName()
+        };
+    }
+
     public static void setLoggedIn(String username){
         String [] user = getUserData(username);
 
@@ -114,7 +129,7 @@ public class dbHelper {
             System.out.println("User already logged in");
         } else {
             user[7] = "Yes";
-            updateDate(user);
+            updateData(user);
             System.out.println("Logged In Successfully");
         }
     }
@@ -126,7 +141,7 @@ public class dbHelper {
             System.out.println("User already logged out");
         } else {
             user[7] = "No";
-            updateDate(user);
+            updateData(user);
             System.out.println("User "+username+" Has Logged Out Successfully");
         }
     }
@@ -135,5 +150,102 @@ public class dbHelper {
         String [] user = getUserData(username);
         return user[7];
     }
+
+
+    public static String getPass(String username){
+        String [] user = getUserData(username);
+        return user[1];
+    }
+
+    public static String getRole(String username){
+        String [] user = getUserData(username);
+        return user[2];
+    }
+
+    public static String getName(String username){
+        String [] user = getUserData(username);
+        return user[8];
+    }
+
+    public static void setPass(String username, String newPass){
+        String [] user = getUserData(username);
+            user[1] = newPass;
+            updateData(user);
+    }
+
+    public static void setRole(String username, String role){
+        String [] user = getUserData(username);
+        user[2] = role;
+        updateData(user);
+        System.out.println("Updated "+username+" Role to: "+role);
+    }
+
+    public static void setName(String username, String name){
+        String [] user = getUserData(username);
+        user[8] = name;
+        updateData(user);
+        System.out.println("Updated "+username+" name to: "+name);
+    }
+
+
+
+
+
+    //TODO: implement setters and getters.
+    public static LocalDateTime getCreatedAt(String username) {
+        String[] user = getUserData(username);
+        LocalDateTime createdAt = LocalDateTime.parse(user[5]);
+        return createdAt;
+    }
+
+    public static void setUpdated_at(String username) {
+        String [] user = getUserData(username);
+        user[6] = String.valueOf(LocalDateTime.now());
+        updateData(user);
+    }
+
+    public static LocalDateTime getUpdated_at(String username) {
+        String[] user = getUserData(username);
+        LocalDateTime updatedAt = LocalDateTime.parse(user[6]);
+        return updatedAt;
+    }
+
+
+    public static void setAccount_locked_for_one_minute(String username) {
+        String [] user = getUserData(username);
+        user[4] = String.valueOf(LocalDateTime.now().plusMinutes(1));
+        updateData(user);
+    }
+
+//    @Override
+//    public void setAccount_locked_until(String username, LocalDateTime time) {
+//
+//    }
+
+    public static LocalDateTime getAccount_locked_until(String username) {
+        String[] user = getUserData(username);
+        LocalDateTime until = LocalDateTime.parse(user[4]);
+        return until;
+    }
+
+    public static void setFailed_login_attempts(String username,int attempts) {
+        String [] user = getUserData(username);
+        user[3] = String.valueOf(Integer.parseInt(user[3])+attempts);
+    }
+
+    public static void incrementFailed_login_attempts(String username) {
+        String [] user = getUserData(username);
+        user[3] = String.valueOf(Integer.parseInt(user[3])+1);
+    }
+
+    public static int getFailed_login_attempts(String username) {
+        String[]user = getUserData(username);
+        int attempts = Integer.parseInt(user[3]);
+        return attempts;
+    }
+
+
+
+
 
 }

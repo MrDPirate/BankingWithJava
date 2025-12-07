@@ -1,5 +1,6 @@
 package com.ga.Banking;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -9,7 +10,6 @@ import java.util.Objects;
 
 
 public class Auth{
-    private HashMap<String, Users> users = new HashMap<>();
     public static String hashPass256(String textToHash) {
         try {
             // Get an instance of the SHA-256 MessageDigest
@@ -46,16 +46,46 @@ public class Auth{
     private static boolean login(String username, String password) {
         if (dbHelper.checkUserExist(username)) {
             String[] user = dbHelper.getUserData(username);
+
+
+            // guard to check if the account is locked
+            if (dbHelper.getAccount_locked_until(username).isAfter(LocalDateTime.now())
+                    && dbHelper.getFailed_login_attempts(username)==3){
+
+                System.out.println("Your account is locked until:" +Users.getAccount_locked_until());
+                return false;
+            }
+
+
             if (Objects.equals(hashPass256(password), user[1])) {
                 dbHelper.setLoggedIn(username);
                 return true;
             } else {
                 System.out.println("Username or password is wrong");
+                
+                if (dbHelper.getFailed_login_attempts(username)==2){
+                    dbHelper.setAccount_locked_for_one_minute(username);
+                }
+                dbHelper.incrementFailed_login_attempts(username);
                 return false;
             }
         } else {
             System.out.println("Username or password is wrong");
             return false;
+        }
+    }
+
+    private static void changePass(String username, String oldPass, String newPass, String newPass2){
+        String [] user = dbHelper.getUserData(username);
+        if (Objects.equals(Auth.hashPass256(oldPass), oldPass)){
+            if (Objects.equals(newPass,newPass2)){
+                user[1] = newPass;
+                dbHelper.setPass(username,newPass);
+            }else {
+                System.out.println("Your new passwords does not match");
+            }
+        }else {
+            System.out.println("Old pass is wrong");
         }
     }
 
