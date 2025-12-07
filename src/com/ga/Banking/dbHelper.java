@@ -17,18 +17,21 @@ public abstract class dbHelper {
 
     static String path = "db/";
 
-    public static void addNew(String username, String password, String role, String name){
+    public static void addNew(String username, String password, String role, String name, String savingAccount, String checkingAccount,
+                              String savingAmount, String checkingAmount){
 
         if (role.equals("Banker")) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(path+"Banker-"+name+"-"+username, true))) {
-                writer.write(username + "," + password + "," + role +","+ "0"+"," + LocalDateTime.now() + "," + LocalDateTime.now() +","+ LocalDateTime.now()+","+"No"+","+name);
+                writer.write(username + "," + password + "," + role +","+ "0"+"," + LocalDateTime.now() + "," + LocalDateTime.now() +","+ LocalDateTime.now()
+                        +","+"No"+","+name+","+savingAccount+","+checkingAccount+","+savingAmount+","+checkingAmount);
             } catch (IOException e) {
                 System.out.println("Error Creating new User: " + e.getMessage());
             }
         }
         else if (role.equals("Customer")) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(path+"Customer-"+name+"-"+username, true))) {
-                writer.write(username + "," + password + "," + role +","+ "0"+"," + LocalDateTime.now() + "," + LocalDateTime.now() +","+ LocalDateTime.now()+","+"No"+","+name);
+                writer.write(username + "," + password + "," + role +","+ "0"+"," + LocalDateTime.now() + "," + LocalDateTime.now() +","+ LocalDateTime.now()
+                        +","+"No"+","+name+","+savingAccount+","+checkingAccount+","+savingAmount+","+checkingAmount);
             } catch (IOException e) {
                 System.out.println("Error Creating new User: " + e.getMessage());
             }
@@ -194,8 +197,7 @@ public abstract class dbHelper {
     //TODO: implement setters and getters.
     public static LocalDateTime getCreatedAt(String username) {
         String[] user = getUserData(username);
-        LocalDateTime createdAt = LocalDateTime.parse(user[5]);
-        return createdAt;
+        return LocalDateTime.parse(user[5]);
     }
 
     public static void setUpdated_at(String username) {
@@ -206,8 +208,7 @@ public abstract class dbHelper {
 
     public static LocalDateTime getUpdated_at(String username) {
         String[] user = getUserData(username);
-        LocalDateTime updatedAt = LocalDateTime.parse(user[6]);
-        return updatedAt;
+        return LocalDateTime.parse(user[6]);
     }
 
 
@@ -224,8 +225,7 @@ public abstract class dbHelper {
 
     public static LocalDateTime getAccount_locked_until(String username) {
         String[] user = getUserData(username);
-        LocalDateTime until = LocalDateTime.parse(user[4]);
-        return until;
+        return LocalDateTime.parse(user[4]);
     }
 
     public static void setFailed_login_attempts(String username,int attempts) {
@@ -240,8 +240,7 @@ public abstract class dbHelper {
 
     public static int getFailed_login_attempts(String username) {
         String[]user = getUserData(username);
-        int attempts = Integer.parseInt(user[3]);
-        return attempts;
+        return Integer.parseInt(user[3]);
     }
 
 

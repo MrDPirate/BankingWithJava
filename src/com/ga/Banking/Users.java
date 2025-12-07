@@ -13,6 +13,10 @@ public class Users {
     private static LocalDateTime updated_at;
     private static String isLoggedIn;
     private static String name;
+    private static boolean hasSavingAccount;
+    private static boolean hasCheckingAccount;
+    private static double savingAmount;
+    private static double checkingAmount;
 
 
     public Users(String[] user) {
@@ -25,6 +29,7 @@ public class Users {
         updated_at = LocalDateTime.parse(user[6]);
         isLoggedIn = user[7];
         name = user [8];
+
     }
 
     public static String getUsername() {

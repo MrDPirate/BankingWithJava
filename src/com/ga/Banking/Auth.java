@@ -33,14 +33,14 @@ public class Auth{
         }
     }
 
-    private static void register(String username, String password, String role,String name){
+    private static void register(String username, String password, String role,String name, String savingAccount, String checkingAccount){
         String hashed_password = hashPass256(password);
         if (dbHelper.checkUserExist(username)){
             System.out.println("User Already exist");
             return;
         }
         System.out.println("Creating account for: "+username);
-        dbHelper.addNew(username,hashed_password,role,name);
+        dbHelper.addNew(username,hashed_password,role,name,savingAccount,checkingAccount);
     }
 
     private static boolean login(String username, String password) {
@@ -62,7 +62,7 @@ public class Auth{
                 return true;
             } else {
                 System.out.println("Username or password is wrong");
-                
+
                 if (dbHelper.getFailed_login_attempts(username)==2){
                     dbHelper.setAccount_locked_for_one_minute(username);
                 }
