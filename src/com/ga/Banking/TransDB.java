@@ -17,9 +17,21 @@ public class TransDB {
 
     static String path = "db/Trans/";
 
-    public static void addNew(String username, String accountType, String tranType,String amount,String postBalance){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path+"Transaction for"+"-"+username, true))) {
-            writer.write(username + "," + accountType + "," + tranType +","+ amount+"," + postBalance + "," + LocalDateTime.now()+"\n");
+    public static void addNew(Users users, String accountType, String tranType,String amount){
+        String postBalance;
+        if (accountType.equalsIgnoreCase("saving")){
+            users.setSavingAmount(users.getSavingAmount()+Double.parseDouble(amount));
+            dbHelper.updateData(dbHelper.userTOoArray(users));
+            postBalance= String.valueOf(users.getSavingAmount());
+
+        }else{
+            users.setCheckingAmount(users.getCheckingAmount()+Double.parseDouble(amount));
+            dbHelper.updateData(dbHelper.userTOoArray(users));
+            postBalance= String.valueOf(users.getCheckingAmount());
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path+"Transaction for"+"-"+users.getUsername(), true))) {
+            writer.write(users.getUsername() + "," + accountType + "," + tranType +","+ amount+"," + postBalance + "," + LocalDateTime.now()+"\n");
         } catch (IOException e) {
             System.out.println("Error Creating new User: " + e.getMessage());
         }
@@ -59,6 +71,7 @@ public class TransDB {
         String userFile = getUserFile(username);
         Path path1 = Paths.get(path);
 
+        //Guard
         if (userFile == null) {
             System.out.println("No trans data assigned to user: " + username);
             return new ArrayList<>();
@@ -86,6 +99,11 @@ public class TransDB {
         }
 
         return data;
+    }
+
+    public static void main(String[] args) {
+        Users khalil = new Users(dbHelper.getUserData("khalil"));
+        addNew(khalil,"saving","withdraw","-100");
     }
 
 }

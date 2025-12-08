@@ -4,20 +4,52 @@ package com.ga.Banking;
 import java.time.LocalDateTime;
 
 public class Users {
-    private static String username;
-    private static String password;
-    private static String role;
-    private static int failed_login_attempts;
-    private static LocalDateTime account_locked_until;
-    private static LocalDateTime created_at;
-    private static LocalDateTime updated_at;
-    private static String isLoggedIn;
-    private static String name;
-    private static boolean hasSavingAccount;
-    private static boolean hasCheckingAccount;
-    private static double savingAmount;
-    private static double checkingAmount;
+    private  String username;
+    private  String password;
+    private  String role;
+    private  int failed_login_attempts;
+    private  LocalDateTime account_locked_until;
+    private  LocalDateTime created_at;
+    private  LocalDateTime updated_at;
+    private  boolean isLoggedIn = false;
+    private  String name;
+    private  boolean hasSavingAccount;
+    private  boolean hasCheckingAccount;
+    private  double savingAmount;
+    private  double checkingAmount;
 
+
+    public boolean getHasSavingAccount() {
+        return hasSavingAccount;
+    }
+
+    public void setHasSavingAccount(boolean hasSavingAccount) {
+        this.hasSavingAccount = hasSavingAccount;
+    }
+
+    public boolean getHasCheckingAccount() {
+        return hasCheckingAccount;
+    }
+
+    public void setHasCheckingAccount(boolean hasCheckingAccount) {
+        this.hasCheckingAccount = hasCheckingAccount;
+    }
+
+    public double getSavingAmount() {
+        return savingAmount;
+    }
+
+    public void setSavingAmount(double savingAmount) {
+        this.savingAmount = savingAmount;
+    }
+
+    public double getCheckingAmount() {
+        return checkingAmount;
+    }
+
+    public void setCheckingAmount(double checkingAmount) {
+        this.checkingAmount = checkingAmount;
+    }
 
     public Users(String[] user) {
         username = user[0];
@@ -27,80 +59,114 @@ public class Users {
         account_locked_until= LocalDateTime.parse(user[4]);
         created_at = LocalDateTime.parse(user[5]);
         updated_at = LocalDateTime.parse(user[6]);
-        isLoggedIn = user[7];
+        isLoggedIn = Boolean.parseBoolean(user[7]);
         name = user [8];
-
+        hasSavingAccount= Boolean.parseBoolean(user[9]);
+        hasCheckingAccount= Boolean.parseBoolean(user[10]);
+        savingAmount= Double.parseDouble(user[11]);
+        checkingAmount= Double.parseDouble(user[12]);
     }
 
-    public static String getUsername() {
-        return username;
+    public String getUsername() {
+        return this.username;
     }
 
-    public static void setUsername(String username) {
-        Users.username = username;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public static String getPassword() {
+    public  String getPassword() {
         return password;
     }
 
-    public static void setPassword(String password) {
-        Users.password = password;
+    public  void setPassword(String password) {
+        this.password = password;
     }
 
-    public static String getRole() {
+    public  String getRole() {
         return role;
     }
 
     public  void setRole(String role) {
-        Users.role = role;
+        this.role = role;
     }
 
-    public static int getFailed_login_attempts() {
+    public  int getFailed_login_attempts() {
         return failed_login_attempts;
     }
 
-    public static void setFailed_login_attempts(int failed_login_attempts) {
-        Users.failed_login_attempts = failed_login_attempts;
+    public  void setFailed_login_attempts(int failed_login_attempts) {
+        this.failed_login_attempts = failed_login_attempts;
     }
 
-    public static LocalDateTime getAccount_locked_until() {
+    public  LocalDateTime getAccount_locked_until() {
         return account_locked_until;
     }
 
-    public static void setAccount_locked_until(LocalDateTime account_locked_until) {
-        Users.account_locked_until = account_locked_until;
+    public  void setAccount_locked_until(LocalDateTime account_locked_until) {
+        this.account_locked_until = account_locked_until;
     }
 
-    public static LocalDateTime getCreated_at() {
+    public  LocalDateTime getCreated_at() {
         return created_at;
     }
 
-    public static void setCreated_at(LocalDateTime created_at) {
-        Users.created_at = created_at;
+    public  void setCreated_at(LocalDateTime created_at) {
+        this.created_at = created_at;
     }
 
-    public static LocalDateTime getUpdated_at() {
+    public  LocalDateTime getUpdated_at() {
         return updated_at;
     }
 
-    public static void setUpdated_at(LocalDateTime updated_at) {
-        Users.updated_at = updated_at;
+    public  void setUpdated_at(LocalDateTime updated_at) {
+        this.updated_at = updated_at;
     }
 
-    public static String getName() {
+    public  String getName() {
         return name;
     }
 
-    public static void setName(String name) {
-        Users.name = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public static String getIsLoggedIn() {
+    public boolean getIsLoggedIn() {
         return isLoggedIn;
     }
 
-    public static void setIsLoggedIn(String isLoggedIn) {
-        Users.isLoggedIn = isLoggedIn;
+    public void setIsLoggedIn() {
+        this.isLoggedIn = true;
+    }
+
+    public void unsetIsLoggedIn(){
+        this.isLoggedIn=false;
+    }
+
+    public void setAccount_locked_for_one_minute(){
+        account_locked_until=LocalDateTime.now().plusMinutes(1);
+    }
+
+    public void incrementFailed_login_attempts(){
+        this.failed_login_attempts++;
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", failed_login_attempts=" + failed_login_attempts +
+                ", account_locked_until=" + account_locked_until +
+                ", created_at=" + created_at +
+                ", updated_at=" + updated_at +
+                ", isLoggedIn=" + isLoggedIn +
+                ", name='" + name + '\'' +
+                ", hasSavingAccount=" + hasSavingAccount +
+                ", hasCheckingAccount=" + hasCheckingAccount +
+                ", savingAmount=" + savingAmount +
+                ", checkingAmount=" + checkingAmount +
+                '}';
     }
 }
