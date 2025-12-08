@@ -27,7 +27,6 @@ public class Auth extends Users{
             byte[] hashedByteArray = digest.digest(byteOfTextToHash);
 
             // Encode the resulting byte array to a Base64 string for easy representation
-
             return Base64.getEncoder().encodeToString(hashedByteArray);
 
         } catch (NoSuchAlgorithmException e) {

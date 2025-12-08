@@ -37,6 +37,26 @@ public class Card{
         }
     }
 
+    public void setDailyWithdrawLimit(double dailyWithdrawLimit) {
+        this.dailyWithdrawLimit = dailyWithdrawLimit;
+    }
+
+    public void setDailyTransLimit(double dailyTransLimit) {
+        this.dailyTransLimit = dailyTransLimit;
+    }
+
+    public void setDailyTransLocalLimit(double dailyTransLocalLimit) {
+        this.dailyTransLocalLimit = dailyTransLocalLimit;
+    }
+
+    public void setDailyDepositLimit(double dailyDepositLimit) {
+        this.dailyDepositLimit = dailyDepositLimit;
+    }
+
+    public void setDailyDepositLocalLimit(double dailyDepositLocalLimit) {
+        this.dailyDepositLocalLimit = dailyDepositLocalLimit;
+    }
+
     public String getCardType() {
         return cardType;
     }

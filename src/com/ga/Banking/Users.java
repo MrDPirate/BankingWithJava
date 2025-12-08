@@ -65,6 +65,14 @@ public class Users {
         return savingCard.getCardType();
     }
 
+    public Card getCheckCard() {
+        return checkingCard;
+    }
+
+    public Card getSaveCard() {
+        return savingCard;
+    }
+
     public void setSavingCard(String card) {
         this.savingCard = new Card(card);
     }
