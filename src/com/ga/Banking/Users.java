@@ -17,7 +17,57 @@ public class Users {
     private  boolean hasCheckingAccount;
     private  double savingAmount;
     private  double checkingAmount;
+    private Card savingCard;
+    private Card checkingCard;
+    private int overdraftAttempts;
 
+    public Users(String[] user) {
+        username = user[0];
+        password = user[1];
+        role = user[2];
+        failed_login_attempts = Integer.parseInt(user[3]);
+        account_locked_until= LocalDateTime.parse(user[4]);
+        created_at = LocalDateTime.parse(user[5]);
+        updated_at = LocalDateTime.parse(user[6]);
+        isLoggedIn = Boolean.parseBoolean(user[7]);
+        name = user [8];
+        hasSavingAccount= Boolean.parseBoolean(user[9]);
+        hasCheckingAccount= Boolean.parseBoolean(user[10]);
+
+        if (hasSavingAccount){
+            savingAmount= Double.parseDouble(user[11]);
+            savingCard=new Card(user[13]);
+        }
+        if (hasCheckingAccount) {
+            checkingAmount= Double.parseDouble(user[12]);
+            checkingCard = new Card(user[14]);
+        }
+        overdraftAttempts= Integer.parseInt(user[15]);
+    }
+
+    public int getOverdraftAttempts() {
+        return overdraftAttempts;
+    }
+
+    public void setOverdraftAttempts(int overdraftAttempts) {
+        this.overdraftAttempts = overdraftAttempts;
+    }
+
+    public String getCheckingCard() {
+        return checkingCard.getCardType();
+    }
+
+    public void setCheckingCard(String card) {
+        this.checkingCard = new Card(card);
+    }
+
+    public String getSavingCard() {
+        return savingCard.getCardType();
+    }
+
+    public void setSavingCard(String card) {
+        this.savingCard = new Card(card);
+    }
 
     public boolean getHasSavingAccount() {
         return hasSavingAccount;
@@ -51,21 +101,7 @@ public class Users {
         this.checkingAmount = checkingAmount;
     }
 
-    public Users(String[] user) {
-        username = user[0];
-        password = user[1];
-        role = user[2];
-        failed_login_attempts = Integer.parseInt(user[3]);
-        account_locked_until= LocalDateTime.parse(user[4]);
-        created_at = LocalDateTime.parse(user[5]);
-        updated_at = LocalDateTime.parse(user[6]);
-        isLoggedIn = Boolean.parseBoolean(user[7]);
-        name = user [8];
-        hasSavingAccount= Boolean.parseBoolean(user[9]);
-        hasCheckingAccount= Boolean.parseBoolean(user[10]);
-        savingAmount= Double.parseDouble(user[11]);
-        checkingAmount= Double.parseDouble(user[12]);
-    }
+
 
     public String getUsername() {
         return this.username;

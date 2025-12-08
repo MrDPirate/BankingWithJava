@@ -125,7 +125,10 @@ public abstract class dbHelper {
                 String.valueOf(users.getHasSavingAccount()),
                 String.valueOf(users.getHasCheckingAccount()),
                 String.valueOf(users.getSavingAmount()),
-                String.valueOf(users.getCheckingAmount())
+                String.valueOf(users.getCheckingAmount()),
+                users.getSavingCard(),
+                users.getCheckingCard(),
+                String.valueOf(users.getOverdraftAttempts())
         };
     }
 
