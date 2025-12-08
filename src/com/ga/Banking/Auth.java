@@ -102,6 +102,7 @@ public class Auth extends Users{
     public static boolean logout(Users user){
         if (dbHelper.checkUserExist(user.getUsername())) {
             user.unsetIsLoggedIn();
+            dbHelper.updateData(dbHelper.userTOoArray(user));
             return true;
         } else {
             System.out.println("Error happened, no such a user");
