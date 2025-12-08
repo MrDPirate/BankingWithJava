@@ -91,10 +91,22 @@ public class Trans implements ITrans{
                     return;
                 }
                 user.setSavingAmount(user.getSavingAmount()-amount);
+                if (user.getSavingAmount()<0){
+                    user.setOverdraftAttempts(user.getOverdraftAttempts()+1);
+                    user.setSavingAmount(user.getSavingAmount()-35);
+                    TransDB.addNew(user,accountType,"overdraft charge", "35");
+
+                }
                 user.getSaveCard().setDailyWithdrawLimit(user.getSaveCard().getDailyWithdrawLimit()-amount);
 
             }else {
                 user.setCheckingAmount(user.getCheckingAmount()-amount);
+                if (user.getCheckingAmount()<0){
+                    user.setOverdraftAttempts(user.getOverdraftAttempts()+1);
+                    user.setCheckingAmount(user.getCheckingAmount()-35);
+                    TransDB.addNew(user,accountType,"overdraft charge", "35");
+
+                }
                 user.getCheckCard().setDailyWithdrawLimit(user.getCheckCard().getDailyWithdrawLimit()-amount);
             }
             TransDB.addNew(user,accountType,"withdraw", String.valueOf(amount));
@@ -107,7 +119,15 @@ public class Trans implements ITrans{
 
     @Override
     public void transferLocal(Users user, String fromAccountType, String toAccountType, double amount) {
+        if (!user.getIsLoggedIn()||user.getOverdraftAttempts()>=2||amount<=0){
+            System.out.println("Can't withdraw");
+            return;
+        }
 
+        if (user.getOverdraftAttempts()== 1 && amount>100){
+            System.out.println("Can't withdraw");
+            return;
+        }
     }
 
     @Override
