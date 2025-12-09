@@ -13,8 +13,8 @@ public class Main {
 
 
 //        password is always: 123
-        Auth.register("hasan","123","Banker", "Mr Khalil","true","false","2000","-100");
-        Auth.register("khalil","123","Banker", "Mr Khalil","yes","no","0","20");
+        Auth.register("hasan","123","Banker", "Mr Khalil","true","false","2000","-100","Mastercard","Mastercard Platinum","0");
+        Auth.register("khalil","123","Banker", "Mr Khalil","yes","no","0","20","Mastercard titanium","Mastercard","0");
 //        Auth.login("hasan","123");
 //        Auth.logout("hasan");
         Auth khalil = new Auth(dbHelper.getUserData("khalil"));

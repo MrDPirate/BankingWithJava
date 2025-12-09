@@ -34,14 +34,14 @@ public class Users {
         hasSavingAccount= Boolean.parseBoolean(user[9]);
         hasCheckingAccount= Boolean.parseBoolean(user[10]);
 
-        if (hasSavingAccount){
+//        if (hasSavingAccount){
             savingAmount= Double.parseDouble(user[11]);
-            savingCard=new Card(user[13]);
-        }
-        if (hasCheckingAccount) {
+            savingCard=new Card(user[13],"Saving",username);
+//        }
+//        if (hasCheckingAccount) {
             checkingAmount= Double.parseDouble(user[12]);
-            checkingCard = new Card(user[14]);
-        }
+            checkingCard = new Card(user[14],"Checking",username);
+//        }
         overdraftAttempts= Integer.parseInt(user[15]);
     }
 
@@ -57,9 +57,6 @@ public class Users {
         return checkingCard.getCardType();
     }
 
-    public void setCheckingCard(String card) {
-        this.checkingCard = new Card(card);
-    }
 
     public String getSavingCard() {
         return savingCard.getCardType();
@@ -73,9 +70,6 @@ public class Users {
         return savingCard;
     }
 
-    public void setSavingCard(String card) {
-        this.savingCard = new Card(card);
-    }
 
     public boolean getHasSavingAccount() {
         return hasSavingAccount;
@@ -211,6 +205,9 @@ public class Users {
                 ", hasCheckingAccount=" + hasCheckingAccount +
                 ", savingAmount=" + savingAmount +
                 ", checkingAmount=" + checkingAmount +
+                ", savingCard=" + savingCard +
+                ", checkingCard=" + checkingCard +
+                ", overdraftAttempts=" + overdraftAttempts +
                 '}';
     }
 }

@@ -1,16 +1,21 @@
 package com.ga.Banking;
 
-public class Card{
+import java.time.LocalDateTime;
 
-    private String cardType;
+public class Card{
+    private final String username;
+    private final String cardType;
+    private final String accountType;
     private double dailyWithdrawLimit;
     private double dailyTransLimit;
     private double dailyTransLocalLimit;
     private double dailyDepositLimit;
     private double dailyDepositLocalLimit;
 
-    public Card(String cardType) {
+    public Card(String cardType,String accountType,String username) {
         this.cardType = cardType;
+        this.accountType = accountType;
+        this.username = username;
         if (cardType.equalsIgnoreCase("Mastercard Platinum")){
             this.dailyWithdrawLimit = 20000;
             this.dailyTransLimit = 40000;
@@ -37,6 +42,16 @@ public class Card{
         }
     }
 
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+
     public void setDailyWithdrawLimit(double dailyWithdrawLimit) {
         this.dailyWithdrawLimit = dailyWithdrawLimit;
     }
@@ -61,9 +76,6 @@ public class Card{
         return cardType;
     }
 
-    public void setCardType(String cardType) {
-        this.cardType = cardType;
-    }
 
     public double getDailyWithdrawLimit() {
         return dailyWithdrawLimit;
@@ -78,6 +90,8 @@ public class Card{
     }
 
     public double getDailyDepositLimit() {
+//        TransDB.filterByDay(username, LocalDateTime.now()).stream().map();
+
         return dailyDepositLimit;
     }
 

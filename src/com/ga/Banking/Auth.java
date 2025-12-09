@@ -36,14 +36,14 @@ public class Auth extends Users{
         }
     }
 
-    public static void register(String username, String password, String role,String name, String savingAccount, String checkingAccount,String savingAmount, String checkingAmount){
+    public static void register(String username, String password, String role,String name, String savingAccount, String checkingAccount,String savingAmount, String checkingAmount, String saving, String checking, String overdraftAttempts){
         String hashed_password = hashPass256(password);
         if (dbHelper.checkUserExist(username)){
             System.out.println("User Already exist");
             return;
         }
         System.out.println("Creating account for: "+username);
-        dbHelper.addNew(username,hashed_password,role,name,savingAccount,checkingAccount,savingAmount, checkingAmount);
+        dbHelper.addNew(username,hashed_password,role,name,savingAccount,checkingAccount,savingAmount, checkingAmount,saving,checking,overdraftAttempts);
     }
 
     public static boolean login(Users user,String username, String password) {
@@ -111,8 +111,8 @@ public class Auth extends Users{
 
     public static void main(String[] args) {
 //        password is always: 123
-        Auth.register("hasan","123","Banker", "Mr Khalil","yes","no","2000","-100");
-        Auth.register("khalil","123","Banker", "Mr Khalil","yes","no","0","20");
+//        Auth.register("hasan","123","Banker", "Mr Khalil","yes","no","2000","-100");
+//        Auth.register("khalil","123","Banker", "Mr Khalil","yes","no","0","20");
 //        Auth.login("hasan","123");
 //        Auth.logout("hasan");
     }

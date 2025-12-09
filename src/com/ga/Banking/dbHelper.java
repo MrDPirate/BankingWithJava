@@ -18,12 +18,12 @@ public abstract class dbHelper {
     static String path = "db/";
 
     public static void addNew(String username, String password, String role, String name, String savingAccount, String checkingAccount,
-                              String savingAmount, String checkingAmount){
+                              String savingAmount, String checkingAmount, String saving, String checking, String overdraftAttempts){
 
         if (role.equals("Banker")) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(path+"Banker-"+name+"-"+username, true))) {
                 writer.write(username + "," + password + "," + role +","+ "0"+"," + LocalDateTime.now() + "," + LocalDateTime.now() +","+ LocalDateTime.now()
-                        +","+"No"+","+name+","+savingAccount+","+checkingAccount+","+savingAmount+","+checkingAmount);
+                        +","+"No"+","+name+","+savingAccount+","+checkingAccount+","+savingAmount+","+checkingAmount+","+saving+","+checking+","+overdraftAttempts);
             } catch (IOException e) {
                 System.out.println("Error Creating new User: " + e.getMessage());
             }
@@ -31,7 +31,7 @@ public abstract class dbHelper {
         else if (role.equals("Customer")) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(path+"Customer-"+name+"-"+username, true))) {
                 writer.write(username + "," + password + "," + role +","+ "0"+"," + LocalDateTime.now() + "," + LocalDateTime.now() +","+ LocalDateTime.now()
-                        +","+"No"+","+name+","+savingAccount+","+checkingAccount+","+savingAmount+","+checkingAmount);
+                        +","+"No"+","+name+","+savingAccount+","+checkingAccount+","+savingAmount+","+checkingAmount+","+saving+","+checking+","+overdraftAttempts);
             } catch (IOException e) {
                 System.out.println("Error Creating new User: " + e.getMessage());
             }
