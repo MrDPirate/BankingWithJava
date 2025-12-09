@@ -1,6 +1,5 @@
 package com.ga.Banking;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -24,13 +22,9 @@ public class TransDB {
     public static void addNew(Users users, String accountType, String tranType,String amount){
         String postBalance;
         if (accountType.equalsIgnoreCase("saving")){
-            users.setSavingAmount(users.getSavingAmount()+Double.parseDouble(amount));
-            dbHelper.updateData(dbHelper.userTOoArray(users));
             postBalance= String.valueOf(users.getSavingAmount());
 
         }else{
-            users.setCheckingAmount(users.getCheckingAmount()+Double.parseDouble(amount));
-            dbHelper.updateData(dbHelper.userTOoArray(users));
             postBalance= String.valueOf(users.getCheckingAmount());
         }
 

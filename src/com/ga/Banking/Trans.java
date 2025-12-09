@@ -7,7 +7,7 @@ public class Trans implements ITrans{
         boolean locked = false;
 
         String accountType = card.getAccountType();
-        if (user.getOverdraftAttempts()>=2){
+        if (user.getOverdraftAttempts()>=1){
             locked = true;
         }
 
@@ -24,10 +24,11 @@ public class Trans implements ITrans{
             user.setSavingAmount(user.getSavingAmount()+amount);
             if (locked && user.getSavingAmount()>=0){
                 user.setOverdraftAttempts(0);
+                System.out.println("Overdraft paid");
             }
             dbHelper.updateData(dbHelper.userTOoArray(user));
             TransDB.addNew(user,"saving","deposit own", String.valueOf(amount));
-            System.out.println(amount+" deposit successfully to " + user.getName() +"in saving account");
+            System.out.println(amount+" deposit successfully to " + user.getName() +" in saving account");
 
         }else if (accountType.equalsIgnoreCase("Checking")){
             if (amount>user.getCheckCard().getDailyDepositLocalLimit()){
@@ -37,10 +38,11 @@ public class Trans implements ITrans{
             user.setCheckingAmount(user.getCheckingAmount()+amount);
             if (locked && user.getSavingAmount()>=0){
                 user.setOverdraftAttempts(0);
+                System.out.println("Overdraft paid");
             }
             dbHelper.updateData(dbHelper.userTOoArray(user));
             TransDB.addNew(user,"checking","deposit own", String.valueOf(amount));
-            System.out.println(amount+" deposit successfully to " + user.getName() +"in checking account");
+            System.out.println(amount+" deposit successfully to " + user.getName() +" in checking account");
 
         }else {
             System.out.println("Please provide a valid account type, saving or checking");
@@ -132,7 +134,7 @@ public class Trans implements ITrans{
             }
             TransDB.addNew(user,accountType,"withdraw", String.valueOf(amount));
             dbHelper.updateData(dbHelper.userTOoArray(user));
-            System.out.println(amount+" withdraw successfully from " + user.getName() +"in "+accountType+" account");
+            System.out.println(amount+" withdraw successfully from " + user.getName() +" in "+accountType+" account");
         }else {
             System.out.println("Please provide a valid account type, saving or checking");
         }
