@@ -1,9 +1,9 @@
 package com.ga.Banking;
 
-import java.time.LocalDateTime;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -90,6 +90,7 @@ public class Auth extends Users{
             if (Objects.equals(newPass,newPass2)){
                 user.setPassword(newPass);
                 dbHelper.updateData(dbHelper.userTOoArray(user));
+                System.out.println("Password changed successfully");
             }else {
                 System.out.println("Your new passwords does not match");
             }
