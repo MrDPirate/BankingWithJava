@@ -20,7 +20,6 @@ public class Trans implements ITrans{
             if (amount>user.getSaveCard().getDailyDepositLocalLimit()){
                 return;
             }
-            user.getSaveCard().setDailyDepositLocalLimit(user.getSaveCard().getDailyDepositLocalLimit()-amount);
             user.setSavingAmount(user.getSavingAmount()+amount);
             if (locked && user.getSavingAmount()>=0){
                 user.setOverdraftAttempts(0);
@@ -34,7 +33,6 @@ public class Trans implements ITrans{
             if (amount>user.getCheckCard().getDailyDepositLocalLimit()){
                 return;
             }
-            user.getCheckCard().setDailyDepositLocalLimit(user.getCheckCard().getDailyDepositLocalLimit()-amount);
             user.setCheckingAmount(user.getCheckingAmount()+amount);
             if (locked && user.getSavingAmount()>=0){
                 user.setOverdraftAttempts(0);
@@ -116,8 +114,6 @@ public class Trans implements ITrans{
                     System.out.println("Overdraft Triggered, you are charged 35 dollar, please pay your bill");
 
                 }
-                user.getSaveCard().setDailyWithdrawLimit(user.getSaveCard().getDailyWithdrawLimit()-amount);
-
             }else {
                 if (amount>user.getCheckCard().getDailyWithdrawLimit()){
                     return;
@@ -130,7 +126,6 @@ public class Trans implements ITrans{
                     System.out.println("Overdraft Triggered, you are charged 35 dollar, please pay your bill");
 
                 }
-                user.getCheckCard().setDailyWithdrawLimit(user.getCheckCard().getDailyWithdrawLimit()-amount);
             }
             TransDB.addNew(user,accountType,"withdraw", String.valueOf(amount));
             dbHelper.updateData(dbHelper.userTOoArray(user));
@@ -168,7 +163,6 @@ public class Trans implements ITrans{
                     System.out.println("Overdraft Triggered, you are charged 35 dollar, please pay your bill");
 
                 }
-                user.getSaveCard().setDailyTransLocalLimit(user.getSaveCard().getDailyTransLocalLimit()-amount);
 
 
             } else {
@@ -185,7 +179,6 @@ public class Trans implements ITrans{
                     System.out.println("Overdraft Triggered, you are charged 35 dollar, please pay your bill");
 
                 }
-                user.getCheckCard().setDailyTransLocalLimit(user.getCheckCard().getDailyTransLocalLimit()-amount);
 
             }
             TransDB.addNew(user,accountType,"transfer local", String.valueOf(amount));
@@ -197,7 +190,7 @@ public class Trans implements ITrans{
     }
 
     @Override
-    public void transfer(Users user, String username, Card card, double amount) {
+    public void transfer(Users user, String username, Card card, String toAccountType, double amount) {
         String accountType = card.getAccountType();
         if (!user.getIsLoggedIn()||user.getOverdraftAttempts()>=2||amount<=0){
             System.out.println("Can't transfer");
@@ -212,13 +205,23 @@ public class Trans implements ITrans{
         if (accountType.equalsIgnoreCase("Checking")||accountType.equalsIgnoreCase("Saving")) {
             Users toUser = new Users(dbHelper.getUserData(username));
 
+            //trans from saving
             if (accountType.equalsIgnoreCase("Saving")) {
                 if (amount > user.getSaveCard().getDailyTransLimit()) {
                     return;
                 }
-                user.setSavingAmount(user.getSavingAmount() - amount);
-                toUser.setSavingAmount(toUser.getSavingAmount() + amount);
 
+                //transfer to the correct account type
+                user.setSavingAmount(user.getSavingAmount() - amount);
+                if (toAccountType.equalsIgnoreCase("Saving")&&toUser.getHasSavingAccount()) {
+                    toUser.setSavingAmount(toUser.getSavingAmount() + amount);
+                } else if (toAccountType.equalsIgnoreCase("Checking") && toUser.getHasCheckingAccount()) {
+                    toUser.setCheckingAmount(toUser.getCheckingAmount() + amount);
+                }else {
+                    System.out.println("Receiver user has no "+toAccountType+" account");
+                }
+
+                //overdraft
                 if (user.getSavingAmount() < 0) {
                     user.setOverdraftAttempts(user.getOverdraftAttempts() + 1);
                     user.setSavingAmount(user.getSavingAmount() - 35);
@@ -226,16 +229,22 @@ public class Trans implements ITrans{
                     System.out.println("Overdraft Triggered, you are charged 35 dollar, please pay your bill");
 
                 }
-                user.getSaveCard().setDailyTransLimit(user.getSaveCard().getDailyTransLimit() - amount);
             } else {
                 if (amount > user.getCheckCard().getDailyTransLimit()) {
                     return;
                 }
 
-                //transfer to the same account type
+                //transfer to the correct account type
                 user.setCheckingAmount(user.getCheckingAmount() - amount);
-                toUser.setCheckingAmount(toUser.getCheckingAmount() + amount);
+                if (toAccountType.equalsIgnoreCase("Saving")&&toUser.getHasSavingAccount()) {
+                    toUser.setSavingAmount(toUser.getSavingAmount() + amount);
+                } else if (toAccountType.equalsIgnoreCase("Checking") && toUser.getHasCheckingAccount()) {
+                    toUser.setCheckingAmount(toUser.getCheckingAmount() + amount);
+                }else {
+                    System.out.println("Receiver user has no "+toAccountType+" account");
+                }
 
+                //overdraft
                 if (user.getCheckingAmount() < 0) {
                     user.setOverdraftAttempts(user.getOverdraftAttempts() + 1);
                     user.setCheckingAmount(user.getCheckingAmount() - 35);
@@ -243,10 +252,12 @@ public class Trans implements ITrans{
                     System.out.println("Overdraft Triggered, you are charged 35 dollar, please pay your bill");
 
                 }
-                user.getCheckCard().setDailyTransLimit(user.getCheckCard().getDailyTransLimit() - amount);
-            }            TransDB.addNew(user,accountType,"transfer", String.valueOf(amount));
+            }
+            TransDB.addNew(toUser,toAccountType,"transfer received",String.valueOf(amount));
+            TransDB.addNew(user,accountType,"transfer out", String.valueOf(amount));
             dbHelper.updateData(dbHelper.userTOoArray(user));
-            System.out.println(amount+" transferred successfully from " + user.getName() +" account "+accountType+" to "+toUser.getName() +" account " +accountType);
+            dbHelper.updateData(dbHelper.userTOoArray(toUser));
+            System.out.println(amount+" transferred successfully from " + user.getName() +"'s"+accountType+" account "+" to "+toUser.getName() +"'s "+toAccountType+" account ");
         }else {
             System.out.println("Please provide a valid account type, saving or checking");
         }

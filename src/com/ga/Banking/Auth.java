@@ -110,12 +110,12 @@ public class Auth extends Users{
         }
     }
 
-    public static void main(String[] args) {
-//        password is always: 123
-//        Auth.register("hasan","123","Banker", "Mr Khalil","yes","no","2000","-100");
-//        Auth.register("khalil","123","Banker", "Mr Khalil","yes","no","0","20");
-//        Auth.login("hasan","123");
-//        Auth.logout("hasan");
-    }
+//    public static void main(String[] args) {
+////        password is always: 123
+////        Auth.register("hasan","123","Banker", "Mr Khalil","yes","no","2000","-100");
+////        Auth.register("khalil","123","Banker", "Mr Khalil","yes","no","0","20");
+////        Auth.login("hasan","123");
+////        Auth.logout("hasan");
+//    }
 
 }

@@ -1,6 +1,7 @@
 package com.ga.Banking;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Card{
     private final String username;
@@ -78,24 +79,59 @@ public class Card{
 
 
     public double getDailyWithdrawLimit() {
-        return dailyWithdrawLimit;
+        return calculateRemainingLimit(dailyWithdrawLimit, accountType, "withdraw");
     }
 
     public double getDailyTransLimit() {
-        return dailyTransLimit;
+        return calculateRemainingLimit(dailyTransLimit, accountType, "transfer out");
     }
 
     public double getDailyTransLocalLimit() {
-        return dailyTransLocalLimit;
+        return calculateRemainingLimit(dailyTransLocalLimit, accountType, "transfer local");
     }
 
     public double getDailyDepositLimit() {
-//        TransDB.filterByDay(username, LocalDateTime.now()).stream().map();
-
-        return dailyDepositLimit;
+        return calculateRemainingLimit(dailyDepositLimit, accountType, "deposit own", "deposit to other");
     }
 
     public double getDailyDepositLocalLimit() {
-        return dailyDepositLocalLimit;
+        return calculateRemainingLimit(dailyDepositLocalLimit, accountType, "deposit own");
+    }
+
+    private double calculateRemainingLimit(double baseLimit, String accountType, String... tranTypes) {
+        List<String[]> today = TransDB.filterByDay(username, LocalDateTime.now());
+        if (today == null || today.isEmpty()) {
+            return baseLimit;
+        }
+
+        double used = 0;
+        for (String[] record : today) {
+            if (record.length < 6) {
+                continue;
+            }
+            String recordAccount = record[1];
+            String recordType = record[2];
+            String amountRaw = record[3];
+
+            if (!recordAccount.equalsIgnoreCase(accountType)) {
+                continue;
+            }
+            if (!TransDB.matchesTranType(recordType, tranTypes)) {
+                continue;
+            }
+
+            used += Math.abs(parseAmount(amountRaw));
+        }
+
+        double remaining = baseLimit - used;
+        return remaining > 0 ? remaining : 0;
+    }
+
+    private double parseAmount(String raw) {
+        try {
+            return Double.parseDouble(raw);
+        } catch (NumberFormatException ex) {
+            return 0;
+        }
     }
 }
